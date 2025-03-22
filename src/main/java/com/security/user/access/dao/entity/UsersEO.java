@@ -20,7 +20,7 @@ public class UsersEO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
-	private String userName;
+	private String username;
 
 	@Column(name = "password_hash")
 	private String password;

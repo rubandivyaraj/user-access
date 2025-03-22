@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,11 +18,10 @@ public class UserAccessWebSecurity {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/user/login", "/user/signup")
-				.permitAll().requestMatchers("/access/api/**").authenticated()).csrf(csrf -> csrf.disable())
+		http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/user/v1/auth/login", "/user/v1/auth/signup")
+				.permitAll().requestMatchers("/api/*").authenticated()).csrf(csrf -> csrf.disable())
 				.headers(header -> header.frameOptions(frameOptions -> frameOptions.sameOrigin()))
-				// .sessionManagement(session ->
-				// session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(userLoginAuthenticationFilter(), BasicAuthenticationFilter.class);
 		return http.build();
 	}

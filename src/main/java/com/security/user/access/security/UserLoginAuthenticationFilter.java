@@ -2,15 +2,15 @@ package com.security.user.access.security;
 
 import java.io.IOException;
 
-import com.security.user.access.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.security.user.access.util.JwtUtil;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -33,6 +33,7 @@ public class UserLoginAuthenticationFilter extends OncePerRequestFilter {
 		System.out.println("Customer Filter calling...");
 
 		if (request.getRequestURI().contains("/user")) {
+			System.out.println("Bypass the process..");
 			filterChain.doFilter(request, response); // Continue the filter chain without processing
 			return;
 		}
@@ -43,7 +44,7 @@ public class UserLoginAuthenticationFilter extends OncePerRequestFilter {
 
 			System.out.println("Token ************ " + tokenHeader);
 			String token = tokenHeader.substring(7);
-            claims = jwtUtil.verifyToken(token);
+			claims = jwtUtil.verifyToken(token);
 			System.out.println("Claims : " + claims);
 			String username = claims.getSubject();
 

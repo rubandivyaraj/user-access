@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/user/v1/auth")
 public class UserController {
 
 	private UsersService usersService;
@@ -30,7 +30,7 @@ public class UserController {
 		return usersService.loginUser(loginEO);
 	}
 
-	@PostMapping("/signup")
+	@PostMapping("/register")
 	public ResponseEntity<ApiResponseTO<String>> createUser(@RequestBody UsersEO loginEO) {
 		return usersService.createUser(loginEO);
 	}
@@ -41,4 +41,12 @@ public class UserController {
 		String jwtToken = httpServletRequest.getHeader("Authorization");
 		return usersService.logoutUser(jwtToken.substring(7));
 	}
+
+	@PostMapping("/validate")
+	public ResponseEntity<ApiResponseTO<String>> validateToken(HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) {
+		String jwtToken = httpServletRequest.getHeader("Authorization");
+		return usersService.logoutUser(jwtToken.substring(7));
+	}
+
 }

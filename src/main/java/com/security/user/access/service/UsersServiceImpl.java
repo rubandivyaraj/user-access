@@ -39,7 +39,7 @@ public class UsersServiceImpl implements UsersService {
 		loginEO.setRole("USER");
 		loginEO.setEnabled(true);
 		UsersEO userDetail = usersRepository.saveAndFlush(loginEO);
-		apiResponseTO = new ApiResponseTO<>(HttpStatus.CREATED, null, userDetail.getUserName());
+		apiResponseTO = new ApiResponseTO<>(HttpStatus.CREATED, null, userDetail.getUsername());
 		return ResponseEntity.ok(apiResponseTO);
 	}
 
@@ -47,11 +47,11 @@ public class UsersServiceImpl implements UsersService {
 	public ResponseEntity<ApiResponseTO<String>> loginUser(UsersEO loginEO) {
 		ApiResponseTO<String> apiResponseTO;
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(loginEO.getUserName(), loginEO.getPassword()));
+				.authenticate(new UsernamePasswordAuthenticationToken(loginEO.getUsername(), loginEO.getPassword()));
 
 		if (authentication.isAuthenticated())
 			apiResponseTO = new ApiResponseTO<>(HttpStatus.ACCEPTED, null,
-					jwtUtil.generateToken(loginEO.getUserName()));
+					jwtUtil.generateToken(loginEO.getUsername()));
 		else
 			apiResponseTO = new ApiResponseTO<>(HttpStatus.UNAUTHORIZED, null,
 					"Authentication Failed - User not found");

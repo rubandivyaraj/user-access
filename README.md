@@ -12,20 +12,20 @@ This project is a Spring Boot 3 application that implements JWT (JSON Web Tokens
 - Logout functionality (pending).
 - Token expiration handling (pending).
 - Refresh token mechanism (optional, pending).
-- H2 Database for data storage.
+- MariaDB Database for data storage.
 
 ## Requirements
 - Java 17 or higher
 - Spring Boot 3.x
 - Spring Security 6.x
-- H2 Database
+- MariaDB Database
 - Maven (for dependency management)
 
 ### API Endpoints
 
 **Register a new user:**
 
-**POST**    /user/signup
+**POST**    /user/v1/auth/register
 - Request body:
     ```
     {
@@ -46,7 +46,7 @@ This project is a Spring Boot 3 application that implements JWT (JSON Web Tokens
 
 **Login:**
 
-- **POST** /user/login
+- **POST** /user/v1/auth/login
 
 - Request body:
     ```

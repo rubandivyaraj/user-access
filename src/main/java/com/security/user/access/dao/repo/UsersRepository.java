@@ -8,6 +8,6 @@ import com.security.user.access.dao.entity.UsersEO;
 @Repository
 public interface UsersRepository extends JpaRepository<UsersEO, Integer> {
 
-	UsersEO findByUserName(String username);
+	UsersEO findByUsername(String username);
 
 }
