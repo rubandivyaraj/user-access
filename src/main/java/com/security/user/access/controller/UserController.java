@@ -13,6 +13,7 @@ import com.security.user.access.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user/v1/auth")
@@ -30,8 +31,8 @@ public class UserController {
 		return usersService.loginUser(loginEO);
 	}
 
-	@PostMapping("/register")
-	public ResponseEntity<ApiResponseTO<String>> createUser(@RequestBody UsersEO loginEO) {
+	@PostMapping("/signup")
+	public ResponseEntity<ApiResponseTO<String>> createUser(@Valid @RequestBody UsersEO loginEO) {
 		return usersService.createUser(loginEO);
 	}
 

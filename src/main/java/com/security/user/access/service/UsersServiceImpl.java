@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.security.user.access.dao.entity.UsersEO;
 import com.security.user.access.dao.repo.UsersRepository;
+import com.security.user.access.exception.UserAccessException;
+import com.security.user.access.exception.UserAccessExceptionCode;
 import com.security.user.access.response.ApiResponseTO;
 import com.security.user.access.util.JwtUtil;
 
@@ -34,10 +36,19 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public ResponseEntity<ApiResponseTO<String>> createUser(UsersEO loginEO) {
+
+		UsersEO findUser = usersRepository.findByUsername(loginEO.getUsername());
+
+		// Here @ControllerAdvice will handle this exception.
+		if (findUser != null)
+			throw new UserAccessException(UserAccessExceptionCode.USER_EXIST);
+
 		ApiResponseTO<String> apiResponseTO;
+
 		loginEO.setPassword(passwordEncoder.encode(loginEO.getPassword()));
 		loginEO.setRole("USER");
 		loginEO.setEnabled(true);
+
 		UsersEO userDetail = usersRepository.saveAndFlush(loginEO);
 		apiResponseTO = new ApiResponseTO<>(HttpStatus.CREATED, null, userDetail.getUsername());
 		return ResponseEntity.ok(apiResponseTO);
