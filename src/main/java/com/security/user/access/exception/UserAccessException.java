@@ -15,13 +15,13 @@ import lombok.Getter;
 @Getter
 public class UserAccessException extends RuntimeException {
 
-	private static final long serialVersionUID = 6572019145237835730L;
+    private static final long serialVersionUID = 6572019145237835730L;
 
-	private UserAccessExceptionCode accessExceptionCode;
+    private UserAccessExceptionCode accessExceptionCode;
 
-	public UserAccessException(UserAccessExceptionCode accessExceptionCode) {
-		super(accessExceptionCode.getMessage());
-		this.accessExceptionCode = accessExceptionCode;
-	}
+    public UserAccessException(UserAccessExceptionCode accessExceptionCode) {
+        super(accessExceptionCode.getMessage());
+        this.accessExceptionCode = accessExceptionCode;
+    }
 
 }

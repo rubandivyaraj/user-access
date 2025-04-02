@@ -16,29 +16,29 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class UserAccessWebSecurity {
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/user/v1/auth/login", "/user/v1/auth/signup")
-				.permitAll().requestMatchers("/api/*").authenticated()).csrf(csrf -> csrf.disable())
-				.headers(header -> header.frameOptions(frameOptions -> frameOptions.sameOrigin()))
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.addFilterBefore(userLoginAuthenticationFilter(), BasicAuthenticationFilter.class);
-		return http.build();
-	}
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/user/v1/auth/*")
+                        .permitAll().requestMatchers("/api/*").authenticated()).csrf(csrf -> csrf.disable())
+                .headers(header -> header.frameOptions(frameOptions -> frameOptions.sameOrigin()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(userLoginAuthenticationFilter(), BasicAuthenticationFilter.class);
+        return http.build();
+    }
 
-	@Bean
-	public UserLoginAuthenticationFilter userLoginAuthenticationFilter() {
-		return new UserLoginAuthenticationFilter();
-	}
+    @Bean
+    public UserLoginAuthenticationFilter userLoginAuthenticationFilter() {
+        return new UserLoginAuthenticationFilter();
+    }
 
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-		return configuration.getAuthenticationManager();
-	}
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder(9);
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(9);
+    }
 
 }

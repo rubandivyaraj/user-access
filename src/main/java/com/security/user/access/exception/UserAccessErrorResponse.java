@@ -1,12 +1,8 @@
 package com.security.user.access.exception;
 
+import lombok.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Component
 @NoArgsConstructor
@@ -16,8 +12,8 @@ import lombok.Setter;
 @Builder
 public class UserAccessErrorResponse {
 
-	private String code;
-	private String error;
-	private String message;
+    private HttpStatus code;
+    private String error;
+    private String message;
 
 }
