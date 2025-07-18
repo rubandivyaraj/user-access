@@ -9,6 +9,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,13 +26,14 @@ public class UserLoginAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil = new JwtUtil();
 
-    @Autowired
-    private BlacklistTokensUtil blacklistTokensUtil;
+    private final BlacklistTokensUtil blacklistTokensUtil;
 
-    @Autowired
-    private UserDetailsService detailsService;
+    private final UserDetailsService detailsService;
 
-    private Claims claims;
+    public UserLoginAuthenticationFilter(BlacklistTokensUtil blacklistTokensUtil, UserDetailsService detailsService) {
+        this.blacklistTokensUtil = blacklistTokensUtil;
+        this.detailsService = detailsService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -45,7 +47,7 @@ public class UserLoginAuthenticationFilter extends OncePerRequestFilter {
 
         String tokenHeader = request.getHeader("Authorization");
 
-        if (tokenHeader == null && !tokenHeader.contains("Bearer ")) {
+        if (tokenHeader == null || !tokenHeader.contains("Bearer ")) {
             throw new UserAccessException(UserAccessExceptionCode.TOKEN_NOT_FOUND);
         }
 
@@ -56,7 +58,7 @@ public class UserLoginAuthenticationFilter extends OncePerRequestFilter {
             throw new UserAccessException(UserAccessExceptionCode.TOKEN_INVALID);
         }
 
-        claims = jwtUtil.verifyToken(token);
+        Claims claims = jwtUtil.verifyToken(token);
         log.info("Claims : {}", claims);
         String username = claims.getSubject();
 

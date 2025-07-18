@@ -18,21 +18,20 @@ import java.util.concurrent.ConcurrentHashMap;
 @EnableScheduling
 public class BlacklistTokensUtil {
 
-    private static final Map<Long, String> blacklistToken = new ConcurrentHashMap<>();
+    private static final Map<String, Long> blacklistToken = new ConcurrentHashMap<>();
     private final DateTimeUtil dateTimeUtil;
 
-    public BlacklistTokensUtil(DateTimeUtil dateTimeUtil) {
-        this.dateTimeUtil = dateTimeUtil;
+    public BlacklistTokensUtil() {
+        this.dateTimeUtil = new DateTimeUtil();
     }
 
     public void addToken(Long key, String token) {
         log.info("Key : {}, token : {}", key, token);
-        blacklistToken.put(key, token);
+        blacklistToken.put(token, key);
     }
 
     public boolean isTokenBlocked(String token) {
-        log.info("given token : {}", token);
-        return blacklistToken.containsValue(token);
+        return !blacklistToken.isEmpty() && blacklistToken.containsKey(token);
     }
 
     /*
@@ -40,6 +39,6 @@ public class BlacklistTokensUtil {
      * */
     @Scheduled(cron = "0 * * * * ?")
     private void deleteToken() {
-        blacklistToken.keySet().removeIf(key -> key < dateTimeUtil.getEpochMilli(0l));
+        blacklistToken.values().removeIf(key -> key < dateTimeUtil.getEpochMilli(0l));
     }
 }
