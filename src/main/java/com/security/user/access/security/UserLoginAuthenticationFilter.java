@@ -20,17 +20,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Slf4j
 public class UserLoginAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil = new JwtUtil();
+    private final JwtUtil jwtUtil;
 
     private final BlacklistTokensUtil blacklistTokensUtil;
 
     private final UserDetailsService detailsService;
 
-    public UserLoginAuthenticationFilter(BlacklistTokensUtil blacklistTokensUtil, UserDetailsService detailsService) {
+    public UserLoginAuthenticationFilter(JwtUtil jwtUtil, BlacklistTokensUtil blacklistTokensUtil, UserDetailsService detailsService) {
+        this.jwtUtil = jwtUtil;
         this.blacklistTokensUtil = blacklistTokensUtil;
         this.detailsService = detailsService;
     }
@@ -39,7 +41,7 @@ public class UserLoginAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         log.info("Customer Filter calling...");
-        if (request.getRequestURI().contains("/user")) {
+        if (Arrays.stream(jwtUtil.getPrivateUrls()).parallel().noneMatch(url -> url.equals(request.getRequestURI()))) {
             log.info("Bypass the process..");
             filterChain.doFilter(request, response); // Continue the filter chain without processing
             return;

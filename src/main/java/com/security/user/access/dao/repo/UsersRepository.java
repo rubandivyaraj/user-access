@@ -9,4 +9,6 @@ public interface UsersRepository extends JpaRepository<UsersEO, Integer> {
 
     UsersEO findByUsernameAndIsEnabled(String username, boolean enable);
 
+    UsersEO findByUsername(String username);
+
 }

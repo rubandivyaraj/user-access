@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,24 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtUtil {
+
+
+    @Getter
+    private String[] publicUrls = {
+            "/user/v1/auth/login",
+            "/user/v1/auth/signup",
+            "/user/v1/auth/activate",
+            "/swagger-ui/**",
+    };
+
+    @Getter
+    private String[] privateUrls = {
+            "/user/v1/auth/validate",
+            "/user/v1/auth/deactivate",
+            "/user/v1/auth/delete",
+            "/user/v1/auth/logout",
+            "/api/product"
+    };
 
     private static SecretKey secretKey;
     @Value("${jwt.token.expiration}")

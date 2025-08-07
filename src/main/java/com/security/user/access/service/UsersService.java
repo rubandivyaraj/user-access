@@ -15,4 +15,10 @@ public interface UsersService {
 
     ResponseEntity<Claims> validateToken(String token);
 
+    ResponseEntity<ApiResponseTO<String>> deactivateUser(String token);
+
+    ResponseEntity<ApiResponseTO<String>> activateUser(String token);
+
+    ResponseEntity<ApiResponseTO<String>> deleteUser(String token, String username);
+
 }

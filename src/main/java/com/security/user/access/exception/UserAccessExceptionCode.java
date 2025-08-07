@@ -17,6 +17,7 @@ public enum UserAccessExceptionCode {
     TOKEN_INVALID(HttpStatus.NOT_ACCEPTABLE, "Token Invalid", "Token invalid or expired"),
     TOKEN_NOT_FOUND(HttpStatus.NOT_ACCEPTABLE, "Token Not Found", "Token invalid or missing"),
     USER_LOCKED(HttpStatus.NOT_ACCEPTABLE, "User Locked", "User is locked, Try after some-time"),
+    USER_DEACTIVATED(HttpStatus.NOT_ACCEPTABLE, "User Deactivated", "User is deactivated, To activate contact administrator"),
     USER_BLOCKED(HttpStatus.FORBIDDEN, "User Blocked", "User blocked permanently, Contact administrator");
 
     private final HttpStatus code;
