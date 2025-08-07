@@ -128,6 +128,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public ResponseEntity<ApiResponseTO<String>> deleteUser(String token, String username) {
         String jwtToken = token.substring(7);
+        setBlacklistTokensUtil(jwtToken);
         UsersEO usersEO = this.usersRepository.findByUsername(username);
 
         if (usersEO == null)

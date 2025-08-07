@@ -27,7 +27,9 @@ public class JwtUtil {
             "/user/v1/auth/login",
             "/user/v1/auth/signup",
             "/user/v1/auth/activate",
+            "/api-docs/**",
             "/swagger-ui/**",
+            "/actuator/**",
     };
 
     @Getter
